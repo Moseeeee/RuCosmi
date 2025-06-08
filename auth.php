@@ -1,5 +1,5 @@
 <?php
-$bot_token = '7386763317:AAGOKEhHMzP9SKXj3ysqGGCX5AZF4Uer9CM';
+$bot_token = '7014256442:AAGXI7CXLfMGqDC4mp9vG9Exr-nozeoFD0I';
 $data = $_GET;
 
 // Проверка хэша
