@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Обработка авторизации</title>
+    <script>
+        function parseQueryString(query) {
+            const params = {};
+            query.replace(/^\?/, '').split('&').forEach(pair => {
+                const [key, value] = pair.split('=');
+                params[key] = decodeURIComponent(value);
+            });
+            return params;
+        }
+
+        window.onload = function() {
+            const params = parseQueryString(window.location.search);
+
+            // Формируем объект пользователя
+            const user = {
+                id: params.id,
+                first_name: params.first_name,
+                last_name: params.last_name || '',
+                username: params.username || '',
+                photo_url: params.photo_url || '',
+                auth_date: params.auth_date,
+                hash: params.hash
+            };
+
+            // Передаём данные в родительское окно
+            if (window.opener) {
+                window.opener.onTelegramAuth(user);
+                window.close();
+            } else {
+                // Если открыто в новом окне/вкладке
+                localStorage.setItem('tg_user', JSON.stringify(user));
+                window.location.href = 'index.html';
+            }
+        };
+    </script>
+</head>
+<body>
+    <p>Обработка авторизации...</p>
+</body>
+</html>
