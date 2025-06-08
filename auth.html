@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Auth Callback</title>
+    <script>
+        function parseQuery(query) {
+            return Object.fromEntries(new URLSearchParams(query).entries());
+        }
+
+        window.onload = function() {
+            const params = parseQuery(window.location.search);
+            const user = {
+                id: params.id,
+                first_name: params.first_name,
+                last_name: params.last_name || '',
+                username: params.username || '',
+                auth_date: params.auth_date,
+                hash: params.hash
+            };
+
+            if (window.opener) {
+                window.opener.onTelegramAuth(user);
+                window.close();
+            } else {
+                localStorage.setItem('tg_user', JSON.stringify(user));
+                window.location.href = '../'; // Возврат на главную
+            }
+        };
+    </script>
+</head>
+<body>
+    <p>Обработка авторизации...</p>
+</body>
+</html>
