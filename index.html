@@ -3,195 +3,725 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RuCosmi</title>
+    <meta name="description" content="Косметолог-эстетист, ламимейкер и мастер пирсинга в Краснодаре. Профессиональные услуги по уходу за кожей, ламинированию ресниц и пирсингу.">
+    <meta name="keywords" content="косметолог, ламинирование ресниц, пирсинг, Краснодар, уход за кожей, чистка лица, микронидлинг">
+    <title>RuCosmi | Косметолог-эстетист в Краснодаре</title>
     <style>
-        body, html {
+        :root {
+            --primary-color: #4a4a4a;
+            --accent-color: #d13f7f;
+            --whatsapp-color: rgba(37, 211, 102, 0.8);
+            --white-transparent: rgba(255, 255, 255, 0.8);
+            --border-radius: 20px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            height: 100%;
-            overflow: hidden;
-            font-family: 'Arial', sans-serif;
         }
-        .background {
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(-45deg, #f5f5f5, #e0e0e0, #f8d6e0, #f5f5f5);
+            background-size: 400% 400%;
+            animation: gradient 12s ease infinite;
+            color: var(--primary-color);
+            min-height: 200vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .header {
             position: fixed;
             top: 0;
-            left: 0;
             width: 100%;
-            height: 100%;
-            background: linear-gradient(-45deg, #f0f0f0, #ffffff, #f8d7da, #e2e2e2);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
-            z-index: -1;
+            text-align: center;
+            padding: 20px 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 1000;
+            transform: translateY(-100%);
+            transition: transform 0.4s ease-out;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            will-change: transform;
         }
-        .content {
+
+        .header.visible {
+            transform: translateY(0);
+        }
+
+        .main-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 0;
+            transition: var(--transition);
+            will-change: transform, opacity;
+        }
+
+        .intro-section {
+            height: 100vh;
+            min-height: 600px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            text-align: center;
+            position: relative;
+            padding: 20px;
+            padding-top: 0;
+            will-change: transform;
+        }
+
+        .intro-title {
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            z-index: 10;
+            will-change: transform, font-size;
+            transform: translateZ(0);
+        }
+
+        .intro-subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--primary-color);
+            opacity: 1;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s ease;
+            position: relative;
+            z-index: 10;
+            max-width: 800px;
+            padding: 0 20px;
+            will-change: opacity;
+        }
+
+        .whatsapp-container {
+            margin-top: 40px;
+            margin-bottom: 20px;
+            transition: all 0.5s ease;
+            position: relative;
+            z-index: 10;
+            will-change: opacity;
+        }
+
+        .whatsapp-link {
+            color: #ffffff;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+            padding: 12px 25px;
+            border-radius: 30px;
+            background: var(--whatsapp-color);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            will-change: transform;
+        }
+
+        .whatsapp-link:hover, .whatsapp-link:focus {
+            transform: translateY(-5px);
+            background: rgba(37, 211, 102, 1);
+            outline: none;
+        }
+
+        .services-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 100px 20px 20px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.5s ease;
+            will-change: transform, opacity;
+        }
+
+        .services-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .services-title {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            margin-bottom: 50px;
+            color: var(--primary-color);
+            will-change: transform;
+        }
+
+        .services-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .service-item {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            width: 100%;
+            max-width: 280px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            will-change: transform;
+        }
+
+        .service-item:hover, .service-item:focus {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+            background: var(--white-transparent);
+            outline: none;
+        }
+
+        .service-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .service-details {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 30px;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .service-detail {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin: 15px 0;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        @media (min-width: 768px) {
+            .service-detail {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+        }
+
+        .service-detail:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+            background: var(--white-transparent);
+        }
+
+        .service-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 15px;
+            object-fit: cover;
+            margin-right: 0;
+            margin-bottom: 20px;
+            background: #f0f0f0;
+            display: block;
+        }
+
+        @media (min-width: 768px) {
+            .service-image {
+                margin-right: 20px;
+                margin-bottom: 0;
+            }
+        }
+
+        .service-content {
+            flex: 1;
             text-align: center;
         }
-        .title {
-            color: #878787;
-            font-size: 5rem;
-            font-weight: bold;
-            margin-bottom: 0;
-            opacity: 0;
-            animation: fadeIn 1s ease-in-out forwards;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+
+        @media (min-width: 768px) {
+            .service-content {
+                text-align: left;
+            }
         }
-        .subtitle {
-            color: #878787;
-            font-size: 1.8rem;
-            margin-top: 20px;
-            opacity: 0;
-            animation: fadeIn 1s ease-in-out 1s forwards;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+
+        .service-name {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
         }
-        .auth-container {
-            margin-top: 40px;
-            opacity: 0;
-            animation: fadeIn 1s ease-in-out 2s forwards;
-            min-height: 60px;
-        }
-        .user-info {
-            color: #878787;
+
+        .back-button {
+            margin-top: 30px;
+            padding: 12px 25px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: var(--primary-color);
             font-size: 1.2rem;
-            margin-top: 20px;
-        }
-        .logout-btn {
-            background: none;
-            border: none;
-            color: #0088cc;
             cursor: pointer;
-            margin-left: 10px;
+            transition: var(--transition);
+            border: none;
+            will-change: transform;
+        }
+
+        .back-button:hover, .back-button:focus {
+            background: var(--white-transparent);
+            transform: translateY(-3px);
+            outline: none;
+        }
+
+        .social-links {
+            position: fixed;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            z-index: 10;
+            padding: 0 20px;
+        }
+
+        .social-link {
+            color: var(--primary-color);
             font-size: 1rem;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+            padding: 10px 15px;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            will-change: transform;
+            white-space: nowrap;
         }
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+
+        @media (min-width: 480px) {
+            .social-link {
+                font-size: 1.1rem;
+                padding: 10px 20px;
+            }
         }
+
+        .social-link:hover, .social-link:focus {
+            transform: translateY(-5px);
+            background: var(--white-transparent);
+            outline: none;
+        }
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            to {
+                opacity: 1;
+            }
         }
-        @media (max-width: 768px) {
-            .title { font-size: 3rem; }
-            .subtitle { font-size: 1.2rem; }
+
+        .contact-info {
+            position: fixed;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            z-index: 10;
+            padding: 0 20px;
+        }
+
+        .highlight {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        /* Ленивая загрузка изображений */
+        .lazy {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .lazy.loaded {
+            opacity: 1;
+        }
+
+        /* Улучшение доступности */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Загрузчик для изображений */
+        .image-placeholder {
+            width: 150px;
+            height: 150px;
+            border-radius: 15px;
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="background"></div>
-    <div class="content">
-        <h1 class="title">RuCosmi</h1>
-        <p class="subtitle">Я - косметолог, ламимейкер и мастер пирсинга</p>
-        <div class="auth-container" id="auth-container"></div>
+    <div class="header">
+        <h1 class="main-title">RuCosmi</h1>
     </div>
 
+    <section class="intro-section" id="introSection">
+        <h1 class="intro-title" id="mainTitle">RuCosmi</h1>
+        <p class="intro-subtitle" id="subTitle">
+            Я - косметолог-эстетист, ламимейкер и мастер пирсинга
+        </p>
+
+        <div class="whatsapp-container" id="whatsappContainer">
+            <a href="https://wa.me/message/K6RRZWB6HQ7JI1" class="whatsapp-link" aria-label="Написать в WhatsApp">
+                WhatsApp
+            </a>
+        </div>
+    </section>
+
+    <section class="services-section" aria-labelledby="servicesHeading">
+        <h2 class="services-title" id="servicesHeading">ЧТО ТЕБЯ ИНТЕРЕСУЕТ?</h2>
+        <div class="services-container" id="mainServices">
+            <div class="service-item" id="cosmetology" tabindex="0" role="button" aria-labelledby="cosmetologyTitle">
+                <h3 class="service-title" id="cosmetologyTitle">Косметология</h3>
+            </div>
+            <div class="service-item" id="lamination" tabindex="0" role="button" aria-labelledby="laminationTitle">
+                <h3 class="service-title" id="laminationTitle">Ламинирование ресниц</h3>
+            </div>
+            <div class="service-item" id="piercing" tabindex="0" role="button" aria-labelledby="piercingTitle">
+                <h3 class="service-title" id="piercingTitle">Пирсинг</h3>
+            </div>
+        </div>
+
+        <!-- Косметологические услуги -->
+        <div class="service-details" id="cosmetologyServices" aria-labelledby="cosmetologyServicesHeading">
+            <h3 id="cosmetologyServicesHeading" class="sr-only">Косметологические услуги</h3>
+            <div class="service-detail">
+                <div class="image-placeholder"></div>
+                <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Чистка лица" class="service-image lazy" loading="lazy" onload="this.classList.add('loaded')">
+                <div class="service-content">
+                    <h4 class="service-name">Чистка лица</h4>
+                    <p>Профессиональная чистка лица с индивидуальным подходом к вашему типу кожи</p>
+                </div>
+            </div>
+            <div class="service-detail">
+                <div class="image-placeholder"></div>
+                <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Пилинг" class="service-image lazy" loading="lazy" onload="this.classList.add('loaded')">
+                <div class="service-content">
+                    <h4 class="service-name">Пилинг</h4>
+                    <p>Различные виды пилингов для обновления и омоложения кожи</p>
+                </div>
+            </div>
+            <div class="service-detail">
+                <div class="image-placeholder"></div>
+                <img src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Микронидлинг" class="service-image lazy" loading="lazy" onload="this.classList.add('loaded')">
+                <div class="service-content">
+                    <h4 class="service-name">Микронидлинг</h4>
+                    <p>Стимуляция естественных процессов регенерации кожи</p>
+                </div>
+            </div>
+            <div class="service-detail">
+                <div class="image-placeholder"></div>
+                <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Массаж" class="service-image lazy" loading="lazy" onload="this.classList.add('loaded')">
+                <div class="service-content">
+                    <h4 class="service-name">Массаж</h4>
+                    <p>Расслабляющий и лимфодренажный массаж лица</p>
+                </div>
+            </div>
+            <div class="service-detail">
+                <div class="image-placeholder"></div>
+                <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Архитектура красоты" class="service-image lazy" loading="lazy" onload="this.classList.add('loaded')">
+                <div class="service-content">
+                    <h4 class="service-name">Архитектура красоты</h4>
+                    <p>Комплексный подход к созданию гармоничного образа</p>
+                </div>
+            </div>
+            <button class="back-button" onclick="backToMain()" aria-label="Вернуться к меню услуг">Вернуться к меню</button>
+        </div>
+
+        <!-- Услуги по ламинированию ресниц -->
+        <div class="service-details" id="laminationServices" aria-labelledby="laminationServicesHeading">
+            <h3 id="laminationServicesHeading" class="sr-only">Услуги по ламинированию ресниц</h3>
+            <div class="service-detail">
+                <div class="image-placeholder"></div>
+                <img src="https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Ламинирование верхних ресниц + ботекс" class="service-image lazy" loading="lazy" onload="this.classList.add('loaded')">
+                <div class="service-content">
+                    <h4 class="service-name">Ламинирование верхних ресниц + ботекс</h4>
+                    <p>Эффектная завивка и укрепление верхних ресниц с питательным ботексом</p>
+                </div>
+            </div>
+            <div class="service-detail">
+                <div class="image-placeholder"></div>
+                <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Ламинирование + ботекс верхних и нижних ресниц" class="service-image lazy" loading="lazy" onload="this.classList.add('loaded')">
+                <div class="service-content">
+                    <h4 class="service-name">Ламинирование + ботекс верхних и нижних ресниц</h4>
+                    <p>Полный комплекс по уходу за ресницами с эффектом "открытого взгляда"</p>
+                </div>
+            </div>
+            <div class="service-detail">
+                <div class="image-placeholder"></div>
+                <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Оформление бровей" class="service-image lazy" loading="lazy" onload="this.classList.add('loaded')">
+                <div class="service-content">
+                    <h4 class="service-name">Оформление бровей</h4>
+                    <p>Создание идеальной формы бровей с учетом особенностей лица</p>
+                </div>
+            </div>
+            <div class="service-detail">
+                <div class="image-placeholder"></div>
+                <img src="https://images.unsplash.com/photo-1498843053630-900ee6f1dfe8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Коррекция бровей" class="service-image lazy" loading="lazy" onload="this.classList.add('loaded')">
+                <div class="service-content">
+                    <h4 class="service-name">Коррекция бровей</h4>
+                    <p>Точная коррекция формы бровей с профессиональным подходом</p>
+                </div>
+            </div>
+            <div class="service-detail">
+                <div class="image-placeholder"></div>
+                <img src="https://images.unsplash.com/photo-1599351431402-dc2e5a6caba7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Депиляция верхней губы" class="service-image lazy" loading="lazy" onload="this.classList.add('loaded')">
+                <div class="service-content">
+                    <h4 class="service-name">Депиляция верхней губы</h4>
+                    <p>Быстрое и безболезненное удаление нежелательных волос над губой</p>
+                </div>
+            </div>
+            <button class="back-button" onclick="backToMain()" aria-label="Вернуться к меню услуг">Вернуться к меню</button>
+        </div>
+    </section>
+
+    <nav class="social-links" aria-label="Социальные сети">
+        <a href="https://www.instagram.com/ru.cosmi?igsh=cXh1a2V3aWIzd2dj" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="Instagram косметолога">
+            ✨ Instagram
+        </a>
+        <a href="https://www.instagram.com/ru.piercing?igsh=MWR0Zm9yZHNxc3QxdA==" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="Instagram мастера пирсинга">
+            🪡 Instagram
+        </a>
+        <a href="https://t.me/Piercing_dinskaya" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+            Telegram
+        </a>
+        <a href="https://vk.com/ru.cosmi1" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="ВКонтакте">
+            ВКонтакте
+        </a>
+    </nav>
+
     <script>
-        // Конфигурация
-        const BOT_USERNAME = "DortmitorySupBot"; // Замените на имя вашего бота (без @)
-        const BOT_TOKEN = "7014256442:AAGXI7CXLfMGqDC4mp9vG9Exr-nozeoFD0I";
-        const AUTH_URL = "https://moseeeee.github.io/RuCosmi/auth";
+        // Оптимизированная обработка скролла
+        let lastScrollPosition = 0;
+        let ticking = false;
 
-        // Проверка авторизации при загрузке
-        document.addEventListener('DOMContentLoaded', function() {
-            const savedUser = localStorage.getItem('tg_user');
+        // Эффект уменьшения заголовка и исчезновения подзаголовка при прокрутке
+        function handleScroll() {
+            const scrollPosition = window.scrollY || window.pageYOffset;
+            const introSection = document.getElementById('introSection');
+            const mainTitle = document.getElementById('mainTitle');
+            const subTitle = document.getElementById('subTitle');
+            const whatsappContainer = document.getElementById('whatsappContainer');
+            const header = document.querySelector('.header');
 
-            if (savedUser) {
-                const user = JSON.parse(savedUser);
-                showUserInfo(user);
+            // Показываем/скрываем фиксированный заголовок
+            if (scrollPosition > 100) {
+                header.classList.add('visible');
             } else {
-                setTimeout(initTelegramWidget, 3000);
+                header.classList.remove('visible');
+            }
+
+            // Эффект уменьшения основного заголовка
+            const scale = Math.max(0.4, 1 - scrollPosition / 500);
+            const fontSize = Math.max(2, 6 - scrollPosition / 50);
+            const opacity = Math.max(0, 1 - scrollPosition / 200);
+
+            mainTitle.style.transform = `scale(${scale}) translateZ(0)`;
+            mainTitle.style.fontSize = `${fontSize}rem`;
+
+            // Эффект исчезновения подзаголовка и кнопки WhatsApp
+            subTitle.style.opacity = opacity;
+            whatsappContainer.style.opacity = opacity;
+
+            // Показываем секцию с услугами
+            const servicesSection = document.querySelector('.services-section');
+            if (servicesSection) {
+                const servicesPosition = servicesSection.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+
+                if (servicesPosition < screenPosition) {
+                    servicesSection.classList.add('visible');
+                }
+            }
+        }
+
+        window.addEventListener('scroll', function() {
+            lastScrollPosition = window.scrollY || window.pageYOffset;
+
+            if (!ticking) {
+                window.requestAnimationFrame(function() {
+                    handleScroll(lastScrollPosition);
+                    ticking = false;
+                });
+
+                ticking = true;
             }
         });
 
-        // Инициализация виджета Telegram
-        function initTelegramWidget() {
-            const authContainer = document.getElementById('auth-container');
-            authContainer.innerHTML = `
-                <script async
-                    src="https://telegram.org/js/telegram-widget.js?22"
-                    data-telegram-login="${BOT_USERNAME}"
-                    data-size="large"
-                    data-radius="20"
-                    data-auth-url="${AUTH_URL}"
-                    data-request-access="write"
-                ><\/script>
-                <p style="color: #878787; margin-top: 10px;">
-                    Для записи на услуги требуется авторизация через Telegram
-                </p>
-            `;
-        }
+        // Обработчики кликов на услуги
+        function setupServiceHandlers() {
+            const cosmetology = document.getElementById('cosmetology');
+            const lamination = document.getElementById('lamination');
+            const piercing = document.getElementById('piercing');
 
-        // Обработка успешной авторизации
-        function onTelegramAuth(user) {
-            // Проверяем данные авторизации
-            if (!validateTelegramAuth(user)) {
-                alert('Ошибка авторизации. Попробуйте снова.');
-                return;
+            if (cosmetology) {
+                cosmetology.addEventListener('click', function() {
+                    showServiceDetails('cosmetologyServices', 'КОСМЕТОЛОГИЧЕСКИЕ УСЛУГИ');
+                });
+                cosmetology.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        showServiceDetails('cosmetologyServices', 'КОСМЕТОЛОГИЧЕСКИЕ УСЛУГИ');
+                    }
+                });
             }
 
-            // Сохраняем данные пользователя
-            const userData = {
-                id: user.id,
-                first_name: user.first_name,
-                last_name: user.last_name || '',
-                username: user.username || '',
-                auth_date: user.auth_date,
-                hash: user.hash
-            };
+            if (lamination) {
+                lamination.addEventListener('click', function() {
+                    showServiceDetails('laminationServices', 'ЛАМИНИРОВАНИЕ РЕСНИЦ И БРОВЕЙ');
+                });
+                lamination.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        showServiceDetails('laminationServices', 'ЛАМИНИРОВАНИЕ РЕСНИЦ И БРОВЕЙ');
+                    }
+                });
+            }
 
-            localStorage.setItem('tg_user', JSON.stringify(userData));
-            showUserInfo(userData);
-
-            // Отправляем данные в бота
-            sendToBot(user.id, "✅ Вы успешно авторизовались на RuCosmi!");
+            if (piercing) {
+                piercing.addEventListener('click', function() {
+                    // Здесь можно добавить обработчик для пирсинга
+                    alert('Раздел пирсинга в разработке');
+                });
+                piercing.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        alert('Раздел пирсинга в разработке');
+                    }
+                });
+            }
         }
 
-        // Валидация данных Telegram (упрощенная версия)
-        function validateTelegramAuth(user) {
-            // В реальном проекте нужно проверять хэш на сервере
-            // Здесь просто проверяем наличие обязательных полей
-            return user && user.id && user.first_name && user.auth_date;
+        // Функция показа деталей услуги
+        function showServiceDetails(serviceId, title) {
+            const mainServices = document.getElementById('mainServices');
+            const serviceDetails = document.getElementById(serviceId);
+            const servicesTitle = document.querySelector('.services-title');
+
+            if (mainServices) mainServices.style.display = 'none';
+            if (serviceDetails) {
+                serviceDetails.style.display = 'flex';
+                // Прокрутка к началу списка услуг
+                setTimeout(() => {
+                    serviceDetails.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 50);
+            }
+            if (servicesTitle) servicesTitle.textContent = title;
         }
 
-        // Отправка сообщения через бота
-        function sendToBot(chatId, text) {
-            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    chat_id: chatId,
-                    text: text
-                })
-            })
-            .catch(error => console.error('Ошибка отправки:', error));
+        // Функция возврата к главному меню
+        function backToMain() {
+            const mainServices = document.getElementById('mainServices');
+            const serviceDetails = document.querySelectorAll('.service-details');
+            const servicesTitle = document.querySelector('.services-title');
+
+            if (mainServices) mainServices.style.display = 'flex';
+            if (serviceDetails) {
+                serviceDetails.forEach(el => {
+                    el.style.display = 'none';
+                });
+            }
+            if (servicesTitle) servicesTitle.textContent = 'ЧТО ТЕБЯ ИНТЕРЕСУЕТ?';
+
+            // Прокрутка к началу меню
+            setTimeout(() => {
+                document.querySelector('.services-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 50);
         }
 
-        // Показ информации о пользователе
-        function showUserInfo(user) {
-            const authContainer = document.getElementById('auth-container');
-            authContainer.innerHTML = `
-                <div class="user-info">
-                    Добро пожаловать, ${user.first_name}${user.last_name ? ' ' + user.last_name : ''}!
-                    <button class="logout-btn" onclick="logout()">(выйти)</button>
-                </div>
-                <p style="color: #878787; margin-top: 20px;">
-                    Теперь вы можете записаться на услуги
-                </p>
-            `;
-        }
+        // Инициализация после загрузки DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            setupServiceHandlers();
 
-        // Выход из системы
-        function logout() {
-            localStorage.removeItem('tg_user');
-            location.reload();
-        }
+            // Полифилл для backdrop-filter в Safari
+            if (!('backdropFilter' in document.documentElement.style) &&
+                !('-webkit-backdrop-filter' in document.documentElement.style)) {
+                document.querySelectorAll('.service-item, .social-link, .back-button, .whatsapp-link').forEach(el => {
+                    el.style.background = 'rgba(255, 255, 255, 0.9)';
+                });
+                document.querySelectorAll('.service-detail').forEach(el => {
+                    el.style.background = 'rgba(255, 255, 255, 0.9)';
+                });
+            }
+
+            // Ленивая загрузка изображений с резервным вариантом
+            document.querySelectorAll('.lazy').forEach(img => {
+                if (img.complete) {
+                    img.classList.add('loaded');
+                } else {
+                    img.addEventListener('error', function() {
+                        this.style.display = 'none';
+                        const placeholder = this.previousElementSibling;
+                        if (placeholder && placeholder.classList.contains('image-placeholder')) {
+                            placeholder.style.display = 'block';
+                        }
+                    });
+                }
+            });
+        });
     </script>
 </body>
 </html>
