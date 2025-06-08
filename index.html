@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+                                                                                       <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -14,6 +14,8 @@
             --white-transparent: rgba(255, 255, 255, 0.8);
             --border-radius: 20px;
             --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --notification-bg: rgba(255, 255, 255, 0.95);
+            --price-color: #d13f7f;
         }
 
         * {
@@ -44,6 +46,42 @@
             }
             100% {
                 background-position: 0% 50%;
+            }
+        }
+
+        /* Новые анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0px);
             }
         }
 
@@ -101,6 +139,7 @@
             z-index: 10;
             will-change: transform, font-size;
             transform: translateZ(0);
+            animation: float 6s ease-in-out infinite;
         }
 
         .intro-subtitle {
@@ -123,6 +162,7 @@
             position: relative;
             z-index: 10;
             will-change: opacity;
+            animation: pulse 2s infinite;
         }
 
         .whatsapp-link {
@@ -145,6 +185,7 @@
             transform: translateY(-5px);
             background: rgba(37, 211, 102, 1);
             outline: none;
+            animation: none;
         }
 
         .services-section {
@@ -210,6 +251,14 @@
             color: var(--primary-color);
         }
 
+        .service-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--price-color);
+            margin-top: 10px;
+            transition: var(--transition);
+        }
+
         .service-details {
             display: none;
             flex-direction: column;
@@ -235,6 +284,7 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             transition: var(--transition);
             border: 1px solid rgba(255, 255, 255, 0.4);
+            animation: fadeInUp 0.6s ease forwards;
         }
 
         @media (min-width: 768px) {
@@ -259,6 +309,7 @@
             margin-bottom: 20px;
             background: #f0f0f0;
             display: block;
+            transition: var(--transition);
         }
 
         @media (min-width: 768px) {
@@ -373,6 +424,48 @@
             font-weight: bold;
         }
 
+        /* Стили для уведомлений */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--notification-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            padding: 15px 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transform: translateX(150%);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 9999;
+            max-width: 300px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification-icon {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+        }
+
+        .notification-close {
+            margin-left: auto;
+            cursor: pointer;
+            color: var(--primary-color);
+            opacity: 0.7;
+            transition: var(--transition);
+        }
+
+        .notification-close:hover {
+            opacity: 1;
+        }
+
         /* Ленивая загрузка изображений */
         .lazy {
             opacity: 0;
@@ -421,6 +514,13 @@
         <h1 class="main-title">RuCosmi</h1>
     </div>
 
+    <!-- Уведомление -->
+    <div class="notification" id="notification">
+        <span class="notification-icon">✨</span>
+        <span id="notificationText">Добро пожаловать!</span>
+        <span class="notification-close" onclick="hideNotification()">×</span>
+    </div>
+
     <section class="intro-section" id="introSection">
         <h1 class="intro-title" id="mainTitle">RuCosmi</h1>
         <p class="intro-subtitle" id="subTitle">
@@ -439,12 +539,15 @@
         <div class="services-container" id="mainServices">
             <div class="service-item" id="cosmetology" tabindex="0" role="button" aria-labelledby="cosmetologyTitle">
                 <h3 class="service-title" id="cosmetologyTitle">Косметология</h3>
+                <div class="service-price">от 1500 ₽</div>
             </div>
             <div class="service-item" id="lamination" tabindex="0" role="button" aria-labelledby="laminationTitle">
                 <h3 class="service-title" id="laminationTitle">Ламинирование ресниц</h3>
+                <div class="service-price">от 2000 ₽</div>
             </div>
             <div class="service-item" id="piercing" tabindex="0" role="button" aria-labelledby="piercingTitle">
                 <h3 class="service-title" id="piercingTitle">Пирсинг</h3>
+                <div class="service-price">от 2500 ₽</div>
             </div>
         </div>
 
@@ -457,6 +560,7 @@
                 <div class="service-content">
                     <h4 class="service-name">Чистка лица</h4>
                     <p>Профессиональная чистка лица с индивидуальным подходом к вашему типу кожи</p>
+                    <div class="service-price">1500 - 2500 ₽</div>
                 </div>
             </div>
             <div class="service-detail">
@@ -465,6 +569,7 @@
                 <div class="service-content">
                     <h4 class="service-name">Пилинг</h4>
                     <p>Различные виды пилингов для обновления и омоложения кожи</p>
+                    <div class="service-price">1800 - 3000 ₽</div>
                 </div>
             </div>
             <div class="service-detail">
@@ -473,6 +578,7 @@
                 <div class="service-content">
                     <h4 class="service-name">Микронидлинг</h4>
                     <p>Стимуляция естественных процессов регенерации кожи</p>
+                    <div class="service-price">2500 - 4000 ₽</div>
                 </div>
             </div>
             <div class="service-detail">
@@ -481,6 +587,7 @@
                 <div class="service-content">
                     <h4 class="service-name">Массаж</h4>
                     <p>Расслабляющий и лимфодренажный массаж лица</p>
+                    <div class="service-price">2000 - 3500 ₽</div>
                 </div>
             </div>
             <div class="service-detail">
@@ -489,6 +596,7 @@
                 <div class="service-content">
                     <h4 class="service-name">Архитектура красоты</h4>
                     <p>Комплексный подход к созданию гармоничного образа</p>
+                    <div class="service-price">3500 - 5000 ₽</div>
                 </div>
             </div>
             <button class="back-button" onclick="backToMain()" aria-label="Вернуться к меню услуг">Вернуться к меню</button>
@@ -503,6 +611,7 @@
                 <div class="service-content">
                     <h4 class="service-name">Ламинирование верхних ресниц + ботекс</h4>
                     <p>Эффектная завивка и укрепление верхних ресниц с питательным ботексом</p>
+                    <div class="service-price">2000 - 2500 ₽</div>
                 </div>
             </div>
             <div class="service-detail">
@@ -511,6 +620,7 @@
                 <div class="service-content">
                     <h4 class="service-name">Ламинирование + ботекс верхних и нижних ресниц</h4>
                     <p>Полный комплекс по уходу за ресницами с эффектом "открытого взгляда"</p>
+                    <div class="service-price">2500 - 3500 ₽</div>
                 </div>
             </div>
             <div class="service-detail">
@@ -519,6 +629,7 @@
                 <div class="service-content">
                     <h4 class="service-name">Оформление бровей</h4>
                     <p>Создание идеальной формы бровей с учетом особенностей лица</p>
+                    <div class="service-price">1000 - 1500 ₽</div>
                 </div>
             </div>
             <div class="service-detail">
@@ -527,6 +638,7 @@
                 <div class="service-content">
                     <h4 class="service-name">Коррекция бровей</h4>
                     <p>Точная коррекция формы бровей с профессиональным подходом</p>
+                    <div class="service-price">800 - 1200 ₽</div>
                 </div>
             </div>
             <div class="service-detail">
@@ -535,6 +647,7 @@
                 <div class="service-content">
                     <h4 class="service-name">Депиляция верхней губы</h4>
                     <p>Быстрое и безболезненное удаление нежелательных волос над губой</p>
+                    <div class="service-price">500 - 800 ₽</div>
                 </div>
             </div>
             <button class="back-button" onclick="backToMain()" aria-label="Вернуться к меню услуг">Вернуться к меню</button>
@@ -614,6 +727,26 @@
             }
         });
 
+        // Функции для работы с уведомлениями
+        function showNotification(text, duration = 3000) {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+
+            notificationText.textContent = text;
+            notification.classList.add('show');
+
+            if (duration) {
+                setTimeout(() => {
+                    hideNotification();
+                }, duration);
+            }
+        }
+
+        function hideNotification() {
+            const notification = document.getElementById('notification');
+            notification.classList.remove('show');
+        }
+
         // Обработчики кликов на услуги
         function setupServiceHandlers() {
             const cosmetology = document.getElementById('cosmetology');
@@ -623,10 +756,12 @@
             if (cosmetology) {
                 cosmetology.addEventListener('click', function() {
                     showServiceDetails('cosmetologyServices', 'КОСМЕТОЛОГИЧЕСКИЕ УСЛУГИ');
+                    showNotification('Вы выбрали косметологические услуги ✨');
                 });
                 cosmetology.addEventListener('keypress', function(e) {
                     if (e.key === 'Enter' || e.key === ' ') {
                         showServiceDetails('cosmetologyServices', 'КОСМЕТОЛОГИЧЕСКИЕ УСЛУГИ');
+                        showNotification('Вы выбрали косметологические услуги ✨');
                     }
                 });
             }
@@ -634,22 +769,23 @@
             if (lamination) {
                 lamination.addEventListener('click', function() {
                     showServiceDetails('laminationServices', 'ЛАМИНИРОВАНИЕ РЕСНИЦ И БРОВЕЙ');
+                    showNotification('Вы выбрали услуги по ламинированию 💫');
                 });
                 lamination.addEventListener('keypress', function(e) {
                     if (e.key === 'Enter' || e.key === ' ') {
                         showServiceDetails('laminationServices', 'ЛАМИНИРОВАНИЕ РЕСНИЦ И БРОВЕЙ');
+                        showNotification('Вы выбрали услуги по ламинированию 💫');
                     }
                 });
             }
 
             if (piercing) {
                 piercing.addEventListener('click', function() {
-                    // Здесь можно добавить обработчик для пирсинга
-                    alert('Раздел пирсинга в разработке');
+                    showNotification('Раздел пирсинга скоро будет доступен! 🪡', 4000);
                 });
                 piercing.addEventListener('keypress', function(e) {
                     if (e.key === 'Enter' || e.key === ' ') {
-                        alert('Раздел пирсинга в разработке');
+                        showNotification('Раздел пирсинга скоро будет доступен! 🪡', 4000);
                     }
                 });
             }
@@ -696,6 +832,11 @@
         document.addEventListener('DOMContentLoaded', function() {
             setupServiceHandlers();
 
+            // Показать приветственное уведомление
+            setTimeout(() => {
+                showNotification('Добро пожаловать в RuCosmi! ✨', 5000);
+            }, 1000);
+
             // Полифилл для backdrop-filter в Safari
             if (!('backdropFilter' in document.documentElement.style) &&
                 !('-webkit-backdrop-filter' in document.documentElement.style)) {
@@ -703,25 +844,67 @@
                     el.style.background = 'rgba(255, 255, 255, 0.9)';
                 });
                 document.querySelectorAll('.service-detail').forEach(el => {
-                    el.style.background = 'rgba(255, 255, 255, 0.9)';
-                });
-            }
+                    el.style.background= 'rgba(255, 255, 255, 0.9)';
+});
+}
 
-            // Ленивая загрузка изображений с резервным вариантом
-            document.querySelectorAll('.lazy').forEach(img => {
-                if (img.complete) {
-                    img.classList.add('loaded');
-                } else {
-                    img.addEventListener('error', function() {
-                        this.style.display = 'none';
-                        const placeholder = this.previousElementSibling;
-                        if (placeholder && placeholder.classList.contains('image-placeholder')) {
-                            placeholder.style.display = 'block';
-                        }
-                    });
-                }
+text
+        // Ленивая загрузка изображений с Intersection Observer
+        if ('IntersectionObserver' in window) {
+            const lazyImages = document.querySelectorAll('.lazy');
+
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src || img.src;
+                        img.classList.add('loaded');
+                        observer.unobserve(img);
+                    }
+                });
+            }, {
+                rootMargin: '100px 0px',
+                threshold: 0.1
             });
-        });
-    </script>
+
+            lazyImages.forEach(img => {
+                imageObserver.observe(img);
+            });
+        } else {
+            // Fallback для браузеров без поддержки IntersectionObserver
+            document.querySelectorAll('.lazy').forEach(img => {
+                img.src = img.dataset.src || img.src;
+                img.classList.add('loaded');
+            });
+        }
+    });
+
+    // Анимация при загрузке страницы
+    window.addEventListener('load', function() {
+        const introTitle = document.querySelector('.intro-title');
+        const introSubtitle = document.querySelector('.intro-subtitle');
+        const whatsappContainer = document.querySelector('.whatsapp-container');
+
+        if (introTitle) {
+            introTitle.style.animation = 'fadeInUp 1s ease forwards';
+        }
+
+        if (introSubtitle) {
+            setTimeout(() => {
+                introSubtitle.style.animation = 'fadeInUp 1s ease forwards 0.3s';
+            }, 300);
+        }
+
+        if (whatsappContainer) {
+            setTimeout(() => {
+                whatsappContainer.style.animation = 'fadeInUp 1s ease forwards 0.6s';
+            }, 600);
+        }
+    });
+</script>
+
+<div class="contact-info">
+    <p>📍 Краснодар, ул. Динская, 28 | 📞 <a href="tel:+79283332211" style="color: var(--accent-color); text-decoration: none;">+7 928 333 22 11</a></p>
+</div>
 </body>
 </html>
