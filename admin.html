@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RuCosmi - Админ-панель</title>
+    <style>
+        :root {
+            --primary: #d13f7f;
+            --primary-light: #e67b9f;
+            --dark: #2c3e50;
+            --light: #f8f9fa;
+            --gray: #e9ecef;
+            --border: #dee2e6;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --info: #17a2b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .admin-sidebar {
+            width: 260px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            min-height: 100vh;
+            padding: 20px 0;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .admin-sidebar h2 {
+            text-align: center;
+            margin: 20px 0 30px;
+            font-size: 1.8rem;
+            font-weight: 300;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .admin-sidebar h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .admin-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .admin-menu li {
+            padding: 12px 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+        }
+
+        .admin-menu li i {
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+
+        .admin-menu li:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .admin-menu li.active {
+            background: rgba(255, 255, 255, 0.15);
+            border-left: 4px solid white;
+            padding-left: 21px;
+        }
+
+        .admin-menu li:last-child {
+            margin-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+        }
+
+        .admin-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h1 {
+            color: var(--primary);
+            font-weight: 300;
+            font-size: 2.2rem;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .btn i {
+            margin-right: 8px;
+        }
+
+        .btn-add {
+            background: var(--success);
+            color: white;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(40, 167, 69, 0.4);
+        }
+
+        .btn-edit {
+            background: var(--warning);
+            color: #333;
+        }
+
+        .btn-delete {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-cancel {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-save {
+            background: var(--info);
+            color: white;
+        }
+
+        .services-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .service-image {
+            height: 180px;
+            width: 100%;
+            background: var(--gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .service-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .service-details {
+            padding: 20px;
+        }
+
+        .service-title {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .service-description {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .service-price {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin: 10px 0;
+        }
+
+        .service-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .service-actions .btn {
+            flex: 1;
+            margin: 0 5px;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-header h2 {
+            color: var(--primary);
+            font-weight: 400;
+            font-size: 1.8rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6c757d;
+            transition: all 0.3s;
+        }
+
+        .close-modal:hover {
+            color: var(--danger);
+            transform: rotate(90deg);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(209, 63, 127, 0.1);
+            outline: none;
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .image-preview {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            padding: 5px;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c757d;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #dee2e6;
+        }
+
+        .empty-state h3 {
+            font-weight: 300;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="admin-sidebar">
+        <h2>Админ-панель</h2>
+        <ul class="admin-menu">
+            <li class="active" data-tab="cosmetology"><i class="fas fa-spa"></i> Косметология</li>
+            <li data-tab="piercing"><i class="fas fa-star"></i> Пирсинг</li>
+            <li data-tab="lash-lifting"><i class="fas fa-eye"></i> Ламинирование</li>
+            <li onclick="window.location.href='/'"><i class="fas fa-arrow-left"></i> Вернуться на сайт</li>
+        </ul>
+    </div>
+
+    <div class="admin-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>Управление услугами</h1>
+            </div>
+
+            <div class="tab-content active" id="cosmetology">
+                <button class="btn btn-add" onclick="openAddModal('cosmetology')">
+                    <i class="fas fa-plus"></i> Добавить услугу
+                </button>
+                <div class="services-list" id="cosmetology-list"></div>
+            </div>
+
+            <div class="tab-content" id="piercing">
+                <button class="btn btn-add" onclick="openAddModal('piercing')">
+                    <i class="fas fa-plus"></i> Добавить услугу
+                </button>
+                <div class="services-list" id="piercing-list"></div>
+            </div>
+
+            <div class="tab-content" id="lash-lifting">
+                <button class="btn btn-add" onclick="openAddModal('lash-lifting')">
+                    <i class="fas fa-plus"></i> Добавить услугу
+                </button>
+                <div class="services-list" id="lash-lifting-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для добавления/редактирования -->
+    <div class="modal" id="service-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Добавить услугу</h2>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="service-form">
+                <input type="hidden" id="service-id">
+                <input type="hidden" id="service-category">
+
+                <div class="form-group">
+                    <label for="service-name">Название услуги</label>
+                    <input type="text" id="service-name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="service-description">Описание услуги</label>
+                    <textarea id="service-description" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="service-price">Цена (руб.)</label>
+                    <input type="number" id="service-price" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="service-image">Изображение</label>
+                    <input type="file" id="service-image" accept="image/*">
+                    <div class="image-preview" id="image-preview"></div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-cancel" onclick="closeModal()">Отмена</button>
+                    <button type="submit" class="btn btn-save">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // DOM элементы
+        const menuItems = document.querySelectorAll('.admin-menu li');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const modal = document.getElementById('service-modal');
+        const serviceForm = document.getElementById('service-form');
+        const imageInput = document.getElementById('service-image');
+        const imagePreview = document.getElementById('image-preview');
+
+        // Текущая редактируемая услуга
+        let currentService = null;
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', () => {
+            // Настройка меню
+            menuItems.forEach(item => {
+                if (item.dataset.tab) {
+                    item.addEventListener('click', () => {
+                        menuItems.forEach(i => i.classList.remove('active'));
+                        item.classList.add('active');
+                        openTab(item.dataset.tab);
+                    });
+                }
+            });
+
+            // Обработка формы
+            serviceForm.addEventListener('submit', handleFormSubmit);
+
+            // Превью изображения
+            imageInput.addEventListener('change', handleImageUpload);
+
+            // Загрузка данных
+            loadServices('cosmetology');
+            loadServices('piercing');
+            loadServices('lash-lifting');
+
+            // Закрытие модального окна при клике вне его
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+        });
+
+        // Функции для работы с табами
+        function openTab(tabId) {
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+                if (content.id === tabId) {
+                    content.classList.add('active');
+                }
+            });
+        }
+
+        // Функции для работы с услугами
+        async function loadServices(category) {
+            try {
+                const response = await fetch(`/api/services/${category}`);
+                const data = await response.json();
+                renderServices(category, data);
+            } catch (error) {
+                console.error('Ошибка загрузки услуг:', error);
+            }
+        }
+
+        function renderServices(category, services) {
+            const container = document.getElementById(`${category}-list`);
+            container.innerHTML = '';
+
+            if (services.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <h3>Нет услуг</h3>
+                        <p>Добавьте первую услугу в эту категорию</p>
+                    </div>
+                `;
+                return;
+            }
+
+            services.forEach(service => {
+                const serviceCard = document.createElement('div');
+                serviceCard.className = 'service-card';
+
+                let imageHtml = service.image_url
+                    ? `<div class="service-image"><img src="/uploads/${service.image_url}" alt="${service.name}"></div>`
+                    : `<div class="service-image" style="display:flex; align-items:center; justify-content:center; color:#6c757d;">
+                            <i class="fas fa-image" style="font-size:3rem;"></i>
+                       </div>`;
+
+                serviceCard.innerHTML = `
+                    ${imageHtml}
+                    <div class="service-details">
+                        <h3 class="service-title">${service.name}</h3>
+                        <p class="service-description">${service.description}</p>
+                        <div class="service-price">${service.price} руб.</div>
+                        <div class="service-actions">
+                            <button class="btn btn-edit" onclick="editService('${category}', ${service.id})">
+                                <i class="fas fa-edit"></i> Редактировать
+                            </button>
+                            <button class="btn btn-delete" onclick="deleteService('${category}', ${service.id})">
+                                <i class="fas fa-trash"></i> Удалить
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(serviceCard);
+            });
+        }
+
+        // Функции для модального окна
+        function openAddModal(category) {
+            currentService = null;
+            document.getElementById('modal-title').textContent = 'Добавить услугу';
+            document.getElementById('service-category').value = category;
+            document.getElementById('service-id').value = '';
+            document.getElementById('service-name').value = '';
+            document.getElementById('service-description').value = '';
+            document.getElementById('service-price').value = '';
+            imagePreview.innerHTML = '';
+            imageInput.value = '';
+            modal.style.display = 'flex';
+        }
+
+        async function editService(category, id) {
+            try {
+                const response = await fetch(`/api/services/${category}/${id}`);
+                const service = await response.json();
+
+                currentService = { category, id };
+
+                document.getElementById('modal-title').textContent = 'Редактировать услугу';
+                document.getElementById('service-category').value = category;
+                document.getElementById('service-id').value = id;
+                document.getElementById('service-name').value = service.name;
+                document.getElementById('service-description').value = service.description;
+                document.getElementById('service-price').value = service.price;
+
+                imagePreview.innerHTML = service.image_url
+                    ? `<img src="/uploads/${service.image_url}" alt="Превью">`
+                    : '';
+
+                imageInput.value = '';
+                modal.style.display = 'flex';
+            } catch (error) {
+                console.error('Ошибка загрузки услуги:', error);
+            }
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+
+            const category = document.getElementById('service-category').value;
+            const id = document.getElementById('service-id').value;
+            const name = document.getElementById('service-name').value;
+            const description = document.getElementById('service-description').value;
+            const price = document.getElementById('service-price').value;
+
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('description', description);
+            formData.append('price', price);
+
+            if (imageInput.files[0]) {
+                formData.append('image', imageInput.files[0]);
+            }
+
+            try {
+                let response;
+                if (currentService) {
+                    // Редактирование существующей услуги
+                    response = await fetch(`/api/services/${category}/${id}`, {
+                        method: 'PUT',
+                        body: formData
+                    });
+                } else {
+                    // Добавление новой услуги
+                    response = await fetch(`/api/services/${category}`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                }
+
+                if (response.ok) {
+                    loadServices(category);
+                    closeModal();
+                } else {
+                    console.error('Ошибка сохранения услуги');
+                    alert('Произошла ошибка при сохранении услуги');
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                alert('Сетевая ошибка. Пожалуйста, попробуйте снова');
+            }
+        }
+
+        function handleImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                imagePreview.innerHTML = `<img src="${event.target.result}" alt="Превью">`;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function deleteService(category, id) {
+            if (confirm('Вы уверены, что хотите удалить эту услугу?')) {
+                try {
+                    const response = await fetch(`/api/services/${category}/${id}`, {
+                        method: 'DELETE'
+                    });
+
+                    if (response.ok) {
+                        loadServices(category);
+                    } else {
+                        console.error('Ошибка удаления услуги');
+                        alert('Произошла ошибка при удалении услуги');
+                    }
+                } catch (error) {
+                    console.error('Ошибка:', error);
+                    alert('Сетевая ошибка. Пожалуйста, попробуйте снова');
+                }
+            }
+        }
+
+        // Глобальные функции для вызова из HTML
+        window.openAddModal = openAddModal;
+        window.editService = editService;
+        window.deleteService = deleteService;
+        window.closeModal = closeModal;
+    </script>
+</body>
+</html>
