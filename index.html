@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RuCosmi - Косметолог-эстетист</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Анимация появления заголовка */
+        @keyframes titleAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) rotateX(-30deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) rotateX(0);
+            }
+        }
+
+        /* Анимация подзаголовка */
+        @keyframes subtitleAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Анимация фона */
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #f8f9fd 50%, #f5f7fa 100%);
+            background-size: 200% 200%;
+            animation: gradientFlow 12s ease infinite;
+        }
+
+        .main-title {
+            opacity: 0;
+            transform: translateY(30px) rotateX(-30deg);
+            transform-origin: bottom;
+            animation: titleAppear 1.2s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+            animation-delay: 0.3s;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: subtitleAppear 1s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+            animation-delay: 0.8s;
+        }
+
+        .services-section {
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 1s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+            animation-delay: 1.2s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header" id="main-header">
+        <h1 class="logo">RuCosmi</h1>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="main-title">RuCosmi</h1>
+                <p class="subtitle">Я - косметолог-эстетист, ламимейкер и мастер пирсинга.</p>
+            </div>
+        </section>
+
+        <section class="services-section" id="services">
+            <a href="{{ url_for('category_page', category='cosmetology') }}" class="service-card top-card">
+                <h2>Косметология</h2>
+                <div class="service-description">
+                    Профессиональный уход за кожей
+                </div>
+            </a>
+            <a href="{{ url_for('category_page', category='piercing') }}" class="service-card left-card">
+                <h2>Пирсинг</h2>
+                <div class="service-description">
+                    Безопасный и стильный пирсинг
+                </div>
+            </a>
+            <a href="{{ url_for('category_page', category='lami') }}" class="service-card right-card">
+                <h2>Лами</h2>
+                <div class="service-description">
+                    Идеальные ресницы на несколько недель
+                </div>
+            </a>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

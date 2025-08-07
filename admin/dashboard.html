@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель | RuCosmi</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-container">
+        <header class="admin-header">
+            <h1>Админ-панель</h1>
+            <div class="admin-header-actions">
+                <a href="{{ url_for('logout') }}" class="btn btn-danger">Выйти</a>
+            </div>
+        </header>
+
+        <div class="admin-categories">
+            <a href="{{ url_for('admin_category', category='cosmetology') }}" class="admin-category-card">
+                <h2>Косметология</h2>
+                <p>Управление услугами по косметологии</p>
+            </a>
+
+            <a href="{{ url_for('admin_category', category='piercing') }}" class="admin-category-card">
+                <h2>Пирсинг</h2>
+                <p>Управление услугами по пирсингу</p>
+            </a>
+
+            <a href="{{ url_for('admin_category', category='lami') }}" class="admin-category-card">
+                <h2>Лами</h2>
+                <p>Управление услугами по ламинированию</p>
+            </a>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>
