@@ -1,0 +1,403 @@
+:root {
+    --light-gray: #f8f9fa;
+    --soft-pink: #fff0f6;
+    --medium-pink: #ff85a2;
+    --dark-pink: #f75990;
+    --dark-text: #212529;
+    --light-text: #495057;
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--dark-text);
+    overflow-x: hidden;
+    min-height: 100vh;
+    background: linear-gradient(
+        135deg,
+        rgba(248, 249, 250, 1) 0%,
+        rgba(255, 240, 246, 1) 50%,
+        rgba(248, 249, 250, 1) 100%
+    );
+    background-size: 200% 200%;
+    animation: gradientFlow 12s ease infinite;
+    background-attachment: fixed;
+}
+
+@keyframes gradientFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Шапка */
+.main-header {
+    position: fixed;
+    top: -100px;
+    left: 0;
+    width: 100%;
+    padding: 1.5rem;
+    transition: var(--transition);
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    opacity: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-header.visible {
+    top: 0;
+    opacity: 1;
+}
+
+.logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, var(--dark-pink), var(--medium-pink));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: 1px;
+    text-align: center;
+    padding: 0.5rem 0;
+}
+
+/* Главный экран */
+.hero-section {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+}
+
+.hero-content {
+    max-width: 800px;
+    padding: 2rem;
+    transition: var(--transition);
+}
+
+.main-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(45deg, var(--dark-text), var(--dark-pink));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    transition: var(--transition);
+    line-height: 1.1;
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    color: var(--light-text);
+    transition: var(--transition);
+    margin-bottom: 2rem;
+    font-weight: 400;
+    opacity: 0.9;
+}
+
+/* Блоки услуг на главной */
+.services-section {
+    min-height: 100vh;
+    padding: 8rem 2rem;
+    display: grid;
+    grid-template-areas:
+        "cosmetology cosmetology cosmetology"
+        "piercing . lami";
+    grid-template-rows: auto 1fr;
+    grid-template-columns: 1fr 2rem 1fr;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: var(--transition);
+}
+
+.services-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.service-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 28px;
+    padding: 3.5rem;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+    transition: var(--transition);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    overflow: hidden;
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+    z-index: -1;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 16px 50px rgba(0, 0, 0, 0.12);
+}
+
+.top-card { grid-area: cosmetology; }
+.left-card { grid-area: piercing; }
+.right-card { grid-area: lami; }
+
+.service-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    display: inline-block;
+    color: var(--dark-text);
+}
+
+.service-card h2::after {
+    content: '';
+    position: absolute;
+    bottom: -0.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4rem;
+    height: 4px;
+    background: linear-gradient(90deg, var(--medium-pink), var(--soft-pink));
+    border-radius: 4px;
+    transition: var(--transition);
+}
+
+.service-card:hover h2::after {
+    width: 8rem;
+}
+
+.service-description {
+    font-size: 1.1rem;
+    color: var(--light-text);
+    line-height: 1.6;
+    max-width: 300px;
+}
+
+/* Страница категории */
+.category-main {
+    padding: 8rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.category-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--dark-pink);
+    position: relative;
+}
+
+.category-title::after {
+    content: '';
+    position: absolute;
+    bottom: -1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--medium-pink), var(--soft-pink));
+    border-radius: 4px;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2.5rem;
+}
+
+.service-item {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    transition: var(--transition);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.service-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+
+.service-image {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    height: 250px;
+    object-fit: cover;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.service-video {
+    width: 100%;
+    border-radius: 12px;
+    margin-top: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.service-item h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: var(--dark-text);
+}
+
+.service-item p {
+    color: var(--light-text);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+/* Адаптация */
+@media (max-width: 992px) {
+    .main-title {
+        font-size: 4rem;
+    }
+    .subtitle {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .services-section {
+        grid-template-areas:
+            "cosmetology"
+            "piercing"
+            "lami";
+        grid-template-columns: 1fr;
+        padding: 6rem 1.5rem;
+        gap: 1.5rem;
+    }
+
+    .main-title {
+        font-size: 3.2rem;
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+    }
+
+    .logo {
+        font-size: 2.2rem;
+    }
+
+    .service-card {
+        padding: 2.5rem 2rem;
+    }
+
+    .service-card h2 {
+        font-size: 2rem;
+    }
+
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+    .main-title {
+        font-size: 2.8rem;
+    }
+
+    .service-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .service-description {
+        font-size: 1rem;
+    }
+
+    .category-title {
+        font-size: 2.2rem;
+    }
+}
+
+
+.service-item {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.service-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, #6C5CE7, #A29BFE);
+}
+
+.service-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #6C5CE7;
+    margin: 1rem 0;
+}
+
+.empty-category {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.empty-category p {
+    font-size: 1.2rem;
+    color: #636E72;
+}
+
+/* Анимация для видео */
+.service-video {
+    transition: all 0.3s ease;
+    border-radius: 12px;
+    margin-top: 1.5rem;
+    background: #000;
+}
+
+.service-video:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
