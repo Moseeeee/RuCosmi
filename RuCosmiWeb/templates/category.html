@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ category }} | RuCosmi</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .service-item {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .service-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15) !important;
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header visible">
+        <h1 class="logo">RuCosmi</h1>
+    </header>
+
+    <main class="category-main">
+        <h2 class="category-title">{{ category }}</h2>
+
+        {% if services %}
+        <div class="services-grid">
+            {% for service in services %}
+            <div class="service-item">
+                {% if service['image_path'] %}
+                <img src="{{ url_for('static', filename=service['image_path']) }}"
+                     alt="{{ service['title'] }}"
+                     class="service-image"
+                     loading="lazy">
+                {% endif %}
+                <h3>{{ service['title'] }}</h3>
+                <p>{{ service['description'] }}</p>
+                <div class="service-price">{{ service['price'] }} ₽</div>
+                {% if service['video_path'] %}
+                <video controls class="service-video" preload="metadata" poster="{{ url_for('static', filename=service['image_path']) if service['image_path'] else '' }}">
+                    <source src="{{ url_for('static', filename=service['video_path']) }}" type="video/mp4">
+                </video>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-category">
+            <p>В этой категории пока нет услуг.</p>
+        </div>
+        {% endif %}
+    </main>
+
+    <script>
+        // Плавное появление элементов при скролле
+        document.addEventListener('DOMContentLoaded', function() {
+            const serviceItems = document.querySelectorAll('.service-item');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            serviceItems.forEach((item, index) => {
+                item.style.opacity = 0;
+                item.style.transform = 'translateY(30px)';
+                item.style.transitionDelay = `${index * 0.1}s`;
+                observer.observe(item);
+            });
+        });
+    </script>
+</body>
+</html>
